@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';  // Asegúrate de importar useNavigate
 import '../index.css';
 import API_BASE_URL from '../js/urlHelper'; // Asegúrate de que la ruta sea correcta
 
@@ -7,14 +7,39 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [menuOpen, setMenuOpen] = useState(false); // Estado para controlar la visibilidad del menú en móvil
+  const navigate = useNavigate(); // Hook para redirigir al usuario
+
+  // Función para verificar el token en localStorage y redirigir
+  const checkAuth = () => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      // Decodificar el token JWT para obtener el rol y el estado del usuario
+      const decodedToken = parseJwt(token);
+      if (decodedToken) {
+        const role = decodedToken.rol;
+        if (role === 'admin') {
+          // Redirigir al panel de admin si el rol es 'admin'
+          navigate('/admin');
+        } else {
+          // Redirigir al home si el rol no es admin
+          navigate('/');
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkAuth(); // Verificar autenticación cuando el componente se monta
+  }, []);
 
   // Función para manejar el envío del formulario
   const handleLogin = async (e) => {
+
     e.preventDefault(); // Prevenir la acción por defecto del formulario
   
     // Preparar los datos para el login
     const data = {
-      username: username, // Asegúrate de que estos estados existan en tu componente
+      username: username,
       password: password,
     };
   
@@ -36,35 +61,51 @@ function Login() {
         const token = data.token;
         localStorage.setItem('jwt', token);
   
-        console.log('Login exitoso, token almacenado:', token);
+       // console.log('Login exitoso, token almacenado:', token);
   
-        // por ejemplo, redirigir a una ruta protegida:
-        window.location.href = '/admin'; // Ajusta según tus rutas
-  
+        // Redirigir según el rol
+        const decodedToken = parseJwt(token);
+        if (decodedToken.rol === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       } else {
         // Si la respuesta no es exitosa, manejar el error
         const errorData = await response.json();
         console.log('Error en login:', errorData.error);
         alert(errorData.error || 'Error en el login');
       }
-  
     } catch (error) {
       console.error('Error al intentar hacer login:', error);
       alert('Hubo un error, por favor intenta nuevamente');
     }
   };
 
- // Función para alternar el menú móvil
+  // Función para alternar el menú móvil
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  // Función para parsear el token JWT
+  const parseJwt = (token) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Error al decodificar el token JWT:", error);
+      return null;
+    }
+  };
 
   return (
     <div className="bg-gray-800 font-sans text-gray-200 min-h-screen flex flex-col">
-      
-       {/* Navbar */}
-       <nav className="flex justify-between items-center p-6 bg-gray-900 text-white shadow-lg">
+      {/* Navbar */}
+      <nav className="flex justify-between items-center p-6 bg-gray-900 text-white shadow-lg">
         <a href="#" className="text-3xl font-bold text-green-400">HomeGuard</a>
         {/* Menú en pantallas grandes */}
         <ul className="hidden lg:flex space-x-8 font-medium">
@@ -145,13 +186,6 @@ function Login() {
         </div>
 
       </section>
-
-      {/* Footer */}
-      <footer className="flex justify-center space-x-4 text-gray-200 p-4 bg-gray-900 mt-auto">
-        <a href="https://www.facebook.com/homeguard" className="hover:text-green-300 transition-colors"><i className="fab fa-facebook-f"></i> Facebook</a>
-        <a href="https://twitter.com/homeguard" className="hover:text-green-300 transition-colors"><i className="fab fa-twitter"></i> Twitter</a>
-        <a href="https://www.instagram.com/homeguard" className="hover:text-green-300 transition-colors"><i className="fab fa-instagram"></i> Instagram</a>
-      </footer>
     </div>
   );
 }

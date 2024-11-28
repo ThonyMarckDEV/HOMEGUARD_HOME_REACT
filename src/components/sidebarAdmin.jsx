@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import LogoutButton from '../components/LogoutButton'; // Ajusta la ruta de importación
 import API_BASE_URL from '../js/urlHelper'; // Ruta base de la API
 
@@ -37,27 +36,27 @@ function SidebarAdmin() {
           onClick={toggleSidebar}
           className="lg:hidden text-white text-2xl p-2"
         >
-          
+          {/* Icono de menú para móviles */}
         </button>
-        <h2 className="text-2xl font-bold mb-8">Menu</h2>
+        <h2 className="text-2xl font-bold mb-8">Menú</h2>
         <ul>
           <li className="mb-4">
-            <Link to="/admin/" className="hover:text-gray-400">Escritorio</Link>
+            <a href="/admin/" className="hover:text-gray-400">Actividades</a>
           </li>
           <li className="mb-4">
-            <Link to="/admin/camara" className="hover:text-gray-400">Camara</Link>
+            <a href="/admin/camara" className="hover:text-gray-400">Cámara</a>
           </li>
           <li className="mb-4">
-            <Link to="/admin/reportes" className="hover:text-gray-400">Reportes</Link>
+            <a href="/admin/reportes" className="hover:text-gray-400">Reportes</a>
           </li>
           <li className="mb-4">
-            <Link to="/admin/luces" className="hover:text-gray-400">Luces</Link>
+            <a href="/admin/luces" className="hover:text-gray-400">Luces</a>
           </li>
           <li className="mb-4">
-            <Link to="/admin/dashboard" className="hover:text-gray-400">Dashboard</Link>
+            <a href="/admin/dashboard" className="hover:text-gray-400">Dashboard</a>
           </li>
           <li className="mb-4">
-            <Link to="/admin/settings" className="hover:text-gray-400">Settings</Link>
+            <a href="/admin/settings" className="hover:text-gray-400">Configuración</a>
           </li>
         </ul>
       </div>
@@ -82,7 +81,6 @@ function SidebarAdmin() {
           </div>
           <LogoutButton />
         </div>
-
       </div>
     </div>
   );
