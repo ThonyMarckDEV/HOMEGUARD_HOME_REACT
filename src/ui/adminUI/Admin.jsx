@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SidebarAdmin from '../../components/sidebarAdmin';
 import API_BASE_URL from '../../js/urlHelper'; 
+import Spinner from '../../components/Spinner'; // Asegúrate de importar el Spinner
 
 const Admin = () => {
   const [isVigilanceModeOn, setIsVigilanceModeOn] = useState(false);
@@ -51,8 +52,16 @@ const Admin = () => {
 
   return (
     <div className="flex h-screen">
-      <SidebarAdmin /> {/* SidebarAdmin integrado */}
-      <div className="flex-1 ml-0 lg:ml-10 mt-20">
+
+    <SidebarAdmin /> {/* SidebarAdmin integrado */}
+
+    {/* Mostrar Spinner mientras carga */}
+    {loading && <Spinner />} {/* Mostrar el spinner si está en estado de carga */}
+
+    <div className="flex-1 flex justify-center items-center lg:justify-start lg:items-start lg:ml-10 mt-20"> 
+      {/* En móviles: centrado; en PC: alineación superior */}
+
+      <div className="text-center lg:text-left"> {/* En móviles: centrado, en PC alineado a la izquierda */}
         <h2 className="text-3xl font-bold mb-4">Programar</h2>
 
         {/* Botón Modo Vigilancia */}
@@ -67,6 +76,7 @@ const Admin = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };
