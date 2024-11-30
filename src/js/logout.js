@@ -30,7 +30,7 @@ export async function logout() {
   
    
     // Redirigir a la página de inicio de sesión en el dominio raíz
-    window.location.href = `/login`;
+    // window.location.href = `/login`;
 
       
 }

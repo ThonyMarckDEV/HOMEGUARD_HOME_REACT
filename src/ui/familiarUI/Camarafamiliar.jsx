@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import SidebarAdmin from '../../components/sidebarAdmin'; 
+import SidebarFamiliar from '../../components/sidebarFamiliar'; 
 import API_BASE_URL from '../../js/urlHelper'; 
 import { verificarYRenovarToken } from '../../js/authToken';
 //import Spinner from '../../components/Spinner'; // Asegúrate de importar el Spinner
@@ -27,7 +27,7 @@ function Camara() {
         //setLoading(true); // Mostrar el spinner al iniciar la solicitud
         await verificarYRenovarToken();  // Verificar el token
 
-        const response = await fetch(`${API_BASE_URL}/api/obtenerLinkStreamESP32Laravel`, {
+        const response = await fetch(`${API_BASE_URL}/api/obtenerLinkStreamESP32LaravelFamiliar`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ function Camara() {
 
   return (
     <div className="flex h-screen bg-blue-100">
-      <SidebarAdmin />
+      <SidebarFamiliar />
       <div className="flex-1 ml-0 lg:ml-1">
         <div className="p-6 mt-16">
           <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">

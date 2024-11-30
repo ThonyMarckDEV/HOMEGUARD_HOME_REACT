@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';  // Asegúrate de importar useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import '../index.css';
 import API_BASE_URL from '../js/urlHelper'; // Asegúrate de que la ruta sea correcta
+import Spinner from '../components/Spinner'; // Asegúrate de importar el Spinner
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [menuOpen, setMenuOpen] = useState(false); // Estado para controlar la visibilidad del menú en móvil
+  const [loading, setLoading] = useState(false); // Estado para controlar la pantalla de carga
   const navigate = useNavigate(); // Hook para redirigir al usuario
 
   // Función para verificar el token en localStorage y redirigir
@@ -20,9 +22,12 @@ function Login() {
         if (role === 'admin') {
           // Redirigir al panel de admin si el rol es 'admin'
           navigate('/admin');
-        } else {
-          // Redirigir al home si el rol no es admin
-          navigate('/');
+        } else if(role === 'familiar') {
+           // Redirigir al panel de admin si el rol es 'admin'
+           navigate('/familiar/camara');
+        }else{
+            // Redirigir al home si el rol no es nongun rol
+           navigate('/');
         }
       }
     }
@@ -34,15 +39,16 @@ function Login() {
 
   // Función para manejar el envío del formulario
   const handleLogin = async (e) => {
-
     e.preventDefault(); // Prevenir la acción por defecto del formulario
-  
+
+    setLoading(true); // Mostrar el spinner
+
     // Preparar los datos para el login
     const data = {
       username: username,
       password: password,
     };
-  
+
     try {
       // Enviar la solicitud POST al backend para hacer el login
       const response = await fetch(`${API_BASE_URL}/api/login`, {
@@ -52,23 +58,21 @@ function Login() {
         },
         body: JSON.stringify(data), // Enviar las credenciales al backend
       });
-  
+
       // Verificar si la respuesta fue exitosa
       if (response.ok) {
         const data = await response.json();
-  
+
         // Almacenar el token en localStorage
         const token = data.token;
         localStorage.setItem('jwt', token);
-  
-       // console.log('Login exitoso, token almacenado:', token);
-  
+
         // Redirigir según el rol
         const decodedToken = parseJwt(token);
         if (decodedToken.rol === 'admin') {
           navigate('/admin');
-        } else {
-          navigate('/');
+        } else if (decodedToken.rol === 'familiar') { 
+          navigate('/familiar/camara');
         }
       } else {
         // Si la respuesta no es exitosa, manejar el error
@@ -79,6 +83,8 @@ function Login() {
     } catch (error) {
       console.error('Error al intentar hacer login:', error);
       alert('Hubo un error, por favor intenta nuevamente');
+    } finally {
+      setLoading(false); // Ocultar el spinner después de que el proceso termine
     }
   };
 
@@ -186,6 +192,8 @@ function Login() {
         </div>
 
       </section>
+
+      {loading && <Spinner />}
     </div>
   );
 }

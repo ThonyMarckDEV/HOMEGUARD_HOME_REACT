@@ -4,9 +4,17 @@ import './index.css';
 import Home from './ui/Home';
 import Login from './ui/Login';
 import ProtectedRoute from './utilities/ProtectedRoute';
+//UIADMIN
 import AdminPage from './ui/adminUI/Admin';
 import CamaraPage from './ui/adminUI/Camara';
 import LucesPage from './ui/adminUI/Luces';
+import SettingsPage from './ui/adminUI/Settings';
+//UIFAMILIAR
+import FamiliarCamara from './ui/familiarUI/Camarafamiliar';
+import LucesPageFamiliar from './ui/familiarUI/LucesFamiliar';
+import SettingsPageFamiliar from './ui/familiarUI/SettingsFamiliar';
+
+
 //Clases js Para actividad usuaruios y chekearToken y estado usuario (LoggedOn - Off)
 import { updateLastActivity } from './js/lastActivity'; // Asegúrate de que esté exportada desde su archivo (Scritp para acutalizar la ultiam actividad del usuario)
 import { checkToken, clearTokenCheckInterval } from './js/checkTokenIntervalanduserStatus';  // Importamos la función checkToken y clearTokenCheckInterval
@@ -39,8 +47,11 @@ function App() {
   return (
     <Router>
       <Routes>
+
         <Route path="/" element={<Home />} />
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/admin"
           element={
             <ProtectedRoute
@@ -65,6 +76,41 @@ function App() {
             />
           }
         />
+        <Route path="/admin/settings"
+          element={
+            <ProtectedRoute
+              element={<SettingsPage />}
+              allowedRoles={['admin']}
+            />
+          }
+        />
+
+        <Route path="/familiar/camara"
+          element={
+            <ProtectedRoute
+              element={<FamiliarCamara />}
+              allowedRoles={['familiar']}
+            />
+          }
+        />
+        <Route path="/familiar/luces"
+          element={
+            <ProtectedRoute
+              element={<LucesPageFamiliar />}
+              allowedRoles={['familiar']}
+            />
+          }
+        />
+        <Route path="/familiar/settings"
+          element={
+            <ProtectedRoute
+              element={<SettingsPageFamiliar />}
+              allowedRoles={['familiar']}
+            />
+          }
+        />
+
+
       </Routes>
     </Router>
   );

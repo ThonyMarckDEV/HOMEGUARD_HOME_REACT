@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LogoutButton from '../components/LogoutButton'; // Ajusta la ruta de importación
 import API_BASE_URL from '../js/urlHelper'; // Ruta base de la API
 
-function SidebarAdmin() {
+function SidebarFamiliar() {
   // Obtener el token JWT del localStorage
   const token = localStorage.getItem('jwt');
 
@@ -41,22 +41,13 @@ function SidebarAdmin() {
         <h2 className="text-2xl font-bold mb-8">Menú</h2>
         <ul>
           <li className="mb-4">
-            <a href="/admin/" className="hover:text-gray-400">Actividades</a>
+            <a href="/familiar/camara" className="hover:text-gray-400">Cámara</a>
           </li>
           <li className="mb-4">
-            <a href="/admin/camara" className="hover:text-gray-400">Cámara</a>
+            <a href="/familiar/luces" className="hover:text-gray-400">Luces</a>
           </li>
           <li className="mb-4">
-            <a href="/admin/reportes" className="hover:text-gray-400">Reportes</a>
-          </li>
-          <li className="mb-4">
-            <a href="/admin/luces" className="hover:text-gray-400">Luces</a>
-          </li>
-          <li className="mb-4">
-            <a href="/admin/dashboard" className="hover:text-gray-400">Dashboard</a>
-          </li>
-          <li className="mb-4">
-            <a href="/admin/settings" className="hover:text-gray-400">Configuración</a>
+            <a href="/familiar/settings" className="hover:text-gray-400">Configuración</a>
           </li>
         </ul>
       </div>
@@ -86,4 +77,4 @@ function SidebarAdmin() {
   );
 }
 
-export default SidebarAdmin;
+export default SidebarFamiliar;

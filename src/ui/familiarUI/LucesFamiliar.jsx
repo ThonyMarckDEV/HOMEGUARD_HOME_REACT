@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SidebarAdmin from '../../components/sidebarAdmin'; 
+import SidebarAdmin from '../../components/sidebarFamiliar'; 
 import API_BASE_URL from '../../js/urlHelper'; 
 import Spinner from '../../components/Spinner'; 
 import { verificarYRenovarToken } from '../../js/authToken';
@@ -74,7 +74,7 @@ function Luces() {
   const fetchSchedules = async () => {
     try {
       const token = localStorage.getItem('jwt');  // Obtener el token del localStorage
-      const response = await fetch(`${API_BASE_URL}/api/led/schedules`, {
+      const response = await fetch(`${API_BASE_URL}/api/led/schedulesFamiliar`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ function Luces() {
     setLoading(true);
     try {
       // Enviar los datos al servidor usando fetch
-      const response = await fetch(`${API_BASE_URL}/api/led/schedule`, {
+      const response = await fetch(`${API_BASE_URL}/api/led/scheduleFamiliar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ function Luces() {
   const deleteSchedule = async (id) => {
     const token = localStorage.getItem('jwt');
     try {
-      const response = await fetch(`${API_BASE_URL}/api/led/schedule/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/led/scheduleFamiliar/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
