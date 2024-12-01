@@ -10,6 +10,8 @@ import CamaraPage from './ui/adminUI/Camara';
 import LucesPage from './ui/adminUI/Luces';
 import SettingsPage from './ui/adminUI/Settings';
 import ReportesPage from './ui/adminUI/Reportes';
+import DashboardPage from './ui/adminUI/Dashboard';
+
 //UIFAMILIAR
 import FamiliarCamara from './ui/familiarUI/Camarafamiliar';
 import LucesPageFamiliar from './ui/familiarUI/LucesFamiliar';
@@ -89,6 +91,14 @@ function App() {
           element={
             <ProtectedRoute
               element={<ReportesPage />}
+              allowedRoles={['admin']}
+            />
+          }
+        />
+        <Route path="/admin/dashboard"
+          element={
+            <ProtectedRoute
+              element={<DashboardPage />}
               allowedRoles={['admin']}
             />
           }
