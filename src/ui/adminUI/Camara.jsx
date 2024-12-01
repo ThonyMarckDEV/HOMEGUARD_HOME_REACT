@@ -84,7 +84,7 @@ function Camara() {
   }, [navigate]); 
 
   return (
-    <div className="flex h-screen bg-blue-100">
+    <div className="flex min-h-screen bg-blue-100 text-gray-900 overflow-auto">
       <SidebarAdmin />
       <div className="flex-1 ml-0 lg:ml-1">
         <div className="p-6 mt-16">

@@ -1,16 +1,61 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect  } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../index.css';
 
 // Importar las imágenes
 import img1 from '../img/1.jpg';
 import img2 from '../img/2.jpg';
 import img3 from '../img/3.jpg';
+import img4 from '../img/4.jpg';
+import img5 from '../img/5.jpg';
+import img6 from '../img/6.jpg';
 
 function Home() {
-  const images = [img1, img2, img3];
+  const images = [img1, img2, img3, img4, img5, img6];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false); // Estado para controlar la visibilidad del menú en móvil
+  const navigate = useNavigate(); // Hook para redirigir al usuario
+  
+    // Función para verificar el token en localStorage y redirigir
+    const checkAuth = () => {
+      const token = localStorage.getItem('jwt');
+      if (token) {
+        // Decodificar el token JWT para obtener el rol y el estado del usuario
+        const decodedToken = parseJwt(token);
+        if (decodedToken) {
+          const role = decodedToken.rol;
+          if (role === 'admin') {
+            // Redirigir al panel de admin si el rol es 'admin'
+            navigate('/admin');
+          } else if(role === 'familiar') {
+             // Redirigir al panel de admin si el rol es 'admin'
+             navigate('/familiar/camara');
+          }else{
+              // Redirigir al home si el rol no es nongun rol
+             navigate('/');
+          }
+        }
+      }
+    };
+  
+    useEffect(() => {
+      checkAuth(); // Verificar autenticación cuando el componente se monta
+    }, []);
+
+      // Función para parsear el token JWT
+      const parseJwt = (token) => {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(
+            atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+          );
+          return JSON.parse(jsonPayload);
+        } catch (error) {
+          console.error("Error al decodificar el token JWT:", error);
+          return null;
+        }
+      };
 
   // Función para mover el slider hacia la izquierda
   const prevImage = () => {
@@ -90,7 +135,7 @@ function Home() {
                 <img 
                   src={image} 
                   alt={`Imagen del sistema ${index + 1}`} 
-                  className="w-full sm:w-[400px] md:w-[600px] h-auto sm:h-[250px] md:h-[400px] object-cover rounded-lg shadow-lg" 
+                  className="w-full sm:w-[400px] md:w-[600px] h-auto sm:h-[250px] md:h-[400px] object-contain rounded-lg shadow-lg" 
                 />
               </div>
             ))}

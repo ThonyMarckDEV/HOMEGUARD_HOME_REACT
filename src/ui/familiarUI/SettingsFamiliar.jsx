@@ -3,6 +3,7 @@ import SidebarFamiliar from '../../components/sidebarFamiliar';
 import API_BASE_URL from '../../js/urlHelper';
 import jwtUtils from '../../utilities/jwtUtils';
 import Spinner from '../../components/Spinner'; // Asegúrate de importar el Spinner
+import { verificarYRenovarToken } from "../../js/authToken";
 
 const Settings = () => {
   const [userData, setUserData] = useState({
@@ -50,6 +51,7 @@ const Settings = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       setLoading(true); // Mostrar el spinner al iniciar la solicitud
+      await verificarYRenovarToken();
       try {
         const token = localStorage.getItem('jwt');
         const response = await fetch(`${API_BASE_URL}/api/perfilUsuarioFamiliar`, {
@@ -97,7 +99,7 @@ const Settings = () => {
 
     const formData = new FormData();
     formData.append('perfil', imageFile);
-
+    await verificarYRenovarToken();
     try {
       setIsUploading(true);
       const token = localStorage.getItem('jwt');
@@ -134,7 +136,7 @@ const Settings = () => {
 
   const updateUserData = async () => {
     setLoading(true); // Mostrar el spinner al iniciar la solicitud
-
+    await verificarYRenovarToken();
     try {
       const token = localStorage.getItem('jwt');
       const idUsuario = jwtUtils.getIdUsuario(token);
@@ -169,7 +171,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex h-screen relative">
+    <div className="flex min-h-screen bg-blue-100 text-gray-900 overflow-auto">
       {/* Sidebar */}
       <SidebarFamiliar />
   

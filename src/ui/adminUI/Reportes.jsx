@@ -11,9 +11,8 @@ function Reportes() {
   const [selectedDate, setSelectedDate] = useState(null); // Fecha seleccionada para abrir/cerrar
 
   useEffect(() => {
-    verificarYRenovarToken();
-
     const fetchImagenes = async () => {
+      await verificarYRenovarToken();
       try {
         const response = await fetch(`${API_BASE_URL}/api/reportes-imagenes`);
         const data = await response.json();

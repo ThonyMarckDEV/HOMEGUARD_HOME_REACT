@@ -73,6 +73,7 @@ function Luces() {
   };
 
   const fetchSchedules = async () => {
+    await verificarYRenovarToken();
     try {
       const token = localStorage.getItem('jwt');  // Obtener el token del localStorage
       const response = await fetch(`${API_BASE_URL}/api/led/schedulesFamiliar`, {
@@ -116,6 +117,7 @@ function Luces() {
     };
     const token = localStorage.getItem("jwt");
     setLoading(true);
+    await verificarYRenovarToken();
     try {
       const response = await fetch(`${API_BASE_URL}/api/led/scheduleFamiliar`, {
         method: "POST",
@@ -160,6 +162,7 @@ function Luces() {
 
   const deleteSchedule = async (id) => {
     const token = localStorage.getItem('jwt');
+    await verificarYRenovarToken();
     try {
       const response = await fetch(`${API_BASE_URL}/api/led/scheduleFamiliar/${id}`, {
         method: 'DELETE',
@@ -195,7 +198,7 @@ function Luces() {
   scheduledTime2 && scheduledTimeOff2 && scheduledTime2 !== scheduledTimeOff2;
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen relative">
+    <div className="flex min-h-screen bg-blue-100 text-gray-900 overflow-auto">
       <SidebarFamiliar />
       {loading && <Spinner />}
       
@@ -216,7 +219,7 @@ function Luces() {
               onClick={() => toggleLight(2, isLightOn2)} 
               className={`flex flex-col items-center cursor-pointer transition-all duration-300 ease-in-out ${isLightOn2 ? 'bg-yellow-500 shadow-2xl shadow-yellow-400' : 'bg-gray-400'} w-32 h-48 sm:w-40 sm:h-56 rounded-3xl justify-center`}>
               <div className={`w-24 h-36 sm:w-28 sm:h-40 ${isLightOn2 ? 'bg-yellow-500' : 'bg-gray-600'} rounded-full mb-2`}></div>
-              <span className="text-white font-bold">{isLightOn2 ? 'Luz Oficina ON' : 'Luz Oficina OFF'}</span>
+              <span className="text-white font-bold">{isLightOn2 ? 'Luz Casa ON' : 'Luz Casa OFF'}</span>
             </div>
           </div>
   
@@ -263,7 +266,7 @@ function Luces() {
                 className={`bg-blue-500 text-white px-4 py-2 rounded-md ${isLight2ButtonEnabled ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
                 disabled={!isLight2ButtonEnabled}
               >
-                Programar Luz Oficina
+                Programar Luz Casa
               </button>
             </div>
           </div>
