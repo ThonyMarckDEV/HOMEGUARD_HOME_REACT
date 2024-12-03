@@ -27,10 +27,13 @@ const Admin = () => {
         const response = await fetch(`${API_BASE_URL}/api/vigilance/status`);
         const data = await response.json();
         setIsVigilanceModeOn(data.is_active);
+
+
       } catch (error) {
         console.error('Error fetching vigilance mode', error);
       } finally {
         setLoading(false);
+
       }
     };
     fetchVigilanceStatus();

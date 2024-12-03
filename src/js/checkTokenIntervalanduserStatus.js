@@ -49,13 +49,13 @@ export const clearTokenCheckInterval = () => {
 }
 
 // Función para verificar el estado del usuario en el servidor
-const checkUserStatus = async () => {
+export const checkUserStatus = async () => {
    // console.log("Verificando estado del usuario con la API...");
 
     const token = localStorage.getItem('jwt'); // Obtén el token actualizado
     if (!token) {
         console.log("No se encontró token al verificar el estado. Redirigiendo al login...");
-        logoutAndRedirect();
+        //logoutAndRedirect();
         return;
     }
 

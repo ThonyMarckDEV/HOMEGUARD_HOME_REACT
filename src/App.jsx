@@ -20,7 +20,7 @@ import SettingsPageFamiliar from './ui/familiarUI/SettingsFamiliar';
 
 //Clases js Para actividad usuaruios y chekearToken y estado usuario (LoggedOn - Off)
 import { updateLastActivity } from './js/lastActivity'; // Asegúrate de que esté exportada desde su archivo (Scritp para acutalizar la ultiam actividad del usuario)
-import { checkToken, clearTokenCheckInterval } from './js/checkTokenIntervalanduserStatus';  // Importamos la función checkToken y clearTokenCheckInterval
+import { checkToken, clearTokenCheckInterval,checkUserStatus } from './js/checkTokenIntervalanduserStatus';  // Importamos la función checkToken y clearTokenCheckInterval
 
 function App() {
 
