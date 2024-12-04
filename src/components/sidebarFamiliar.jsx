@@ -1,20 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LogoutButton from '../components/LogoutButton'; // Ajusta la ruta de importación
 import API_BASE_URL from '../js/urlHelper'; // Ruta base de la API
 
+// Importa la imagen predeterminada
+import defaultImage from '../components/default.jpg'; // Ruta correcta de la imagen
+
 function SidebarFamiliar() {
-  // Obtener el token JWT del localStorage
-  const token = localStorage.getItem('jwt');
-
-  let username = '';
-  let perfil = '';
-
-  if (token) {
-    // Decodificar el token JWT para obtener la información del usuario
-    const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    username = decodedToken.username;  // Obtener el nombre de usuario
-    perfil = decodedToken.perfil;  // Obtener la URL del perfil
-  }
+  // Estado para el nombre de usuario y perfil
+  const [username, setUsername] = useState('');
+  const [perfil, setPerfil] = useState(null); // Estado para manejar el perfil (null si no hay)
 
   // Estado para controlar la visibilidad de la sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,6 +17,18 @@ function SidebarFamiliar() {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  // Obtener datos del token JWT solo una vez cuando el componente se monte
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      // Decodificar el token JWT para obtener la información del usuario
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      setUsername(decodedToken.username);  // Obtener el nombre de usuario
+      const perfilUrl = decodedToken.perfil || null;  // Establecer null si no hay enlace de perfil
+      setPerfil(perfilUrl);
+    }
+  }, []);  // Se ejecuta solo una vez cuando el componente se monta
 
   return (
     <div className="flex h-screen">
@@ -63,10 +69,12 @@ function SidebarFamiliar() {
             >
               &#9776; {/* Icono de menú en móviles */}
             </button>
+            {/* Imagen de perfil */}
             <img
-              src={`${API_BASE_URL}/${perfil}`} // Concatenar la URL base con el perfil
+              src={perfil ? `${API_BASE_URL}/${perfil}` : defaultImage} // Usa la imagen predeterminada si no hay perfil
               alt="Profile"
               className="rounded-full w-10 h-10 mr-3"
+              onError={(e) => e.target.src = defaultImage} // Imagen predeterminada si falla
             />
             <span>{username}</span> {/* Mostrar el nombre de usuario */}
           </div>

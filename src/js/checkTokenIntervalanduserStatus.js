@@ -87,7 +87,7 @@ export const checkUserStatus = async () => {
         }
     } catch (error) {
         console.error("Error en la solicitud de verificación del estado del usuario:", error);
-        logoutAndRedirect();
+        //logoutAndRedirect();
     }
 }
 
@@ -134,11 +134,11 @@ const renewToken = async (token) => {
             console.log("Nuevo token almacenado en localStorage.");
         } else {
             console.log("Error al renovar el token, cerrando sesión...");
-            logoutAndRedirect();
+           // logoutAndRedirect();
         }
     } catch (error) {
         console.error("Excepción al renovar el token:", error);
-        logoutAndRedirect();
+       // logoutAndRedirect();
     } finally {
         isRenewingToken = false;
     }
@@ -157,7 +157,7 @@ const checkAndRenewToken = async () => {
     const tokenExpiration = parseJwtExpiration(token);
     if (!tokenExpiration) {
         console.log("No se pudo obtener la expiración del token, cerrando sesión...");
-        logoutAndRedirect();
+       // logoutAndRedirect();
         return;
     }
 
@@ -167,7 +167,7 @@ const checkAndRenewToken = async () => {
     if (timeRemaining <= 0) {
         alert("Tu sesión ha caducado, serás redirigido para iniciar sesión nuevamente.");
         console.log("El token ha expirado, cerrando sesión...");
-        logoutAndRedirect();
+      //  logoutAndRedirect();
     } else if (timeRemaining <= expirationThreshold) {
        // console.log(`Renovando el token, tiempo restante hasta expiración: ${timeRemaining} segundos.`);
         await renewToken(token);
