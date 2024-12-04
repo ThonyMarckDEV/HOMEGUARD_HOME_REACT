@@ -10,39 +10,46 @@ function Auditoria() {
     const [isLoading, setIsLoading] = useState(false);
     const token = localStorage.getItem('jwt');
 
+    // Usamos useEffect para verificar el token y cargar usuarios
     useEffect(() => {
-      fetch(`${API_BASE_URL}/api/usuarios/familiares/auditoria`)
-          .then((response) => response.json())
-          .then((data) => {
-              console.log(data);  // Asegúrate de ver los datos aquí
-              setUsuarios(data);
-          })
-          .catch((error) => console.error('Error fetching usuarios:', error));
-
-
-        fetchAuditorias();
-    }, []);
+        const cargarDatos = async () => {
+            await verificarYRenovarToken();  // Verificar el token
+            fetchUsuarios();
+            fetchAuditorias();
+        };
+        cargarDatos();
+        
+        // No es necesario limpiar nada aquí si no estamos usando un timer o suscripción
+    }, []); // Solo se ejecuta una vez cuando el componente se monta
 
     useEffect(() => {
         fetchAuditorias();
     }, [selectedUsuario]);
 
-    const fetchAuditorias = () => {
+    const fetchUsuarios = () => {
+        fetch(`${API_BASE_URL}/api/usuarios/familiares/auditoria`)
+            .then((response) => response.json())
+            .then((data) => {
+                setUsuarios(data);
+            })
+            .catch((error) => console.error('Error fetching usuarios:', error));
+    };
+
+    const fetchAuditorias = async () => {
         setIsLoading(true);
-       // En fetch de auditorías
-      fetch(`${API_BASE_URL}/api/auditorias?idUsuario=${selectedUsuario}`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Auditorías recibidas:", data); // Debug
-          setAuditorias(data);
+        await verificarYRenovarToken();  // Verificar el token
+        fetch(`${API_BASE_URL}/api/auditorias?idUsuario=${selectedUsuario}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
-        .catch((error) => console.error("Error fetching auditorias:", error))
-        .finally(() => setIsLoading(false));
+            .then((response) => response.json())
+            .then((data) => {
+                setAuditorias(data);
+            })
+            .catch((error) => console.error('Error fetching auditorias:', error))
+            .finally(() => setIsLoading(false));
     };
 
     const handleUsuarioChange = (e) => {
@@ -50,64 +57,65 @@ function Auditoria() {
     };
 
     return (
-        <div className="flex min-h-screen bg-blue-100 text-gray-900 overflow-auto">
-
+        <div className="flex min-h-screen bg-blue-50 text-gray-900 overflow-auto">
             <SidebarAdmin />
 
-            <div className="flex-1 p-6">
-              <h1 className="text-2xl font-bold mb-4">Auditoría</h1>
-              <div className="mb-4">
-                  <label htmlFor="usuario" className="block text-sm font-medium mb-2 text-gray-700">Filtrar por usuario</label>
-                  <select 
-                      onChange={handleUsuarioChange} 
-                      value={selectedUsuario}
-                      className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-black"
-                  >
-                      <option value="" className="text-gray-500">Seleccionar usuario</option>
-                      {usuarios.length > 0 ? (
-                          usuarios.map((usuario) => (
-                              <option key={usuario.id} value={usuario.id} className="text-black">
-                                  {usuario.nombres} {usuario.apellidos}
-                              </option>
-                          ))
-                      ) : (
-                          <option disabled className="text-gray-500">Cargando usuarios...</option>
-                      )}
-                  </select>
-              </div>
+            <div className="flex-1 p-6 lg:p-10">
+                <h1 className="text-3xl font-semibold mb-6">Auditoría</h1>
+                
+                <div className="mb-6 flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
+                    <div className="w-full lg:w-1/3">
+                        <label htmlFor="usuario" className="block text-sm font-medium mb-2 text-gray-700">Filtrar por usuario</label>
+                        <select 
+                            onChange={handleUsuarioChange} 
+                            value={selectedUsuario}
+                            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+                        >
+                            <option value="" className="text-gray-500">Seleccionar usuario</option>
+                            {usuarios.length > 0 ? (
+                                usuarios.map((usuario) => (
+                                    <option key={usuario.id} value={usuario.id} className="text-black">
+                                        {usuario.nombres} {usuario.apellidos}
+                                    </option>
+                                ))
+                            ) : (
+                                <option disabled className="text-gray-500">Cargando usuarios...</option>
+                            )}
+                        </select>
+                    </div>
+                </div>
 
-
-                <table className="min-w-full bg-white border border-gray-300 rounded-md">
-                    <thead>
-                        <tr>
-                            <th className="p-2 border-b">Usuario</th>
-                            <th className="p-2 border-b">Descripción</th>
-                            <th className="p-2 border-b">Fecha y Hora</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {isLoading ? (
+                <div className="overflow-x-auto bg-white shadow-md rounded-lg border border-gray-200">
+                    <table className="min-w-full">
+                        <thead className="bg-gray-800 text-white">
                             <tr>
-                                <td colSpan="3" className="p-4 text-center">Cargando...</td>
+                                <th className="p-3 text-left">Usuario</th>
+                                <th className="p-3 text-left">Descripción</th>
+                                <th className="p-3 text-left">Fecha y Hora</th>
                             </tr>
-                        ) : auditorias.length > 0 ? (
-                            auditorias.map((auditoria) => (
-                                <tr key={auditoria.id}>
-                                    <td className="p-2 border-b">{auditoria.nombre_completo}</td>
-                                    <td className="p-2 border-b">{auditoria.descripcion}</td>
-                                    <td className="p-2 border-b">{auditoria.fecha_hora}</td>
+                        </thead>
+                        <tbody>
+                            {isLoading ? (
+                                <tr>
+                                    <td colSpan="3" className="p-4 text-center">Cargando...</td>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="3" className="p-4 text-center">No hay auditorías disponibles.</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-
+                            ) : auditorias.length > 0 ? (
+                                auditorias.map((auditoria) => (
+                                    <tr key={auditoria.id} className="hover:bg-gray-100">
+                                        <td className="p-3 border-b">{auditoria.nombre_completo}</td>
+                                        <td className="p-3 border-b">{auditoria.descripcion}</td>
+                                        <td className="p-3 border-b">{auditoria.fecha_hora}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="3" className="p-4 text-center">No hay auditorías disponibles.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            
         </div>
     );
 }
