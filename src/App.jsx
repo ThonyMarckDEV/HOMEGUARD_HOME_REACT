@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 import Home from './ui/Home';
 import Login from './ui/Login';
+import Nosotros from './ui/Nosotros';
+import Servicios from './ui/Servicios';
+import Contacto from './ui/Contacto';
+
 import ProtectedRoute from './utilities/ProtectedRoute';
 //UIADMIN
 import AdminPage from './ui/adminUI/Admin';
@@ -55,6 +59,12 @@ function App() {
         <Route path="/" element={<Home />} />
 
         <Route path="/login" element={<Login />} />
+
+        <Route path="/nosotros" element={<Nosotros />} />
+
+        <Route path="/servicios" element={<Servicios />} />
+
+        <Route path="/contacto" element={<Contacto />} />
 
         <Route path="/admin"
           element={
