@@ -56,6 +56,9 @@ function SidebarAdmin() {
             <a href="/admin/dashboard" className="hover:text-gray-400">Dashboard</a>
           </li>
           <li className="mb-4">
+            <a href="/admin/auditoria" className="hover:text-gray-400">Auditoria</a>
+          </li>
+          <li className="mb-4">
             <a href="/admin/settings" className="hover:text-gray-400">Configuración</a>
           </li>
         </ul>

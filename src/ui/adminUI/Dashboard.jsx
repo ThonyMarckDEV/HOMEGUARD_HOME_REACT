@@ -116,7 +116,7 @@ const Dashboard = () => {
   
           {/* Gráfico de Reportes por Mes */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md w-full max-h-[450px] sm:max-h-[400px] flex flex-col">
-            <h3 className="text-xl font-semibold mb-4">Reportes por Mes</h3>
+            <h3 className="text-xl font-semibold mb-4">Reportes de Movimiento por Mes</h3>
             <div className="flex-1">
               <Bar
                 data={chartDataMeses}
@@ -148,7 +148,7 @@ const Dashboard = () => {
   
           {/* Gráfico de Reportes por Día */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-md w-full max-h-[450px] sm:max-h-[400px] flex flex-col">
-            <h3 className="text-xl font-semibold mb-4">Reportes por Día de {nombreMes}</h3>
+            <h3 className="text-xl font-semibold mb-4">Reportes de movimiento por Día de {nombreMes}</h3>
             <div className="flex-1">
               <Bar
                 data={chartDataDia}

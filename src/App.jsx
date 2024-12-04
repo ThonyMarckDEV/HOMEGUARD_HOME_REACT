@@ -11,6 +11,7 @@ import LucesPage from './ui/adminUI/Luces';
 import SettingsPage from './ui/adminUI/Settings';
 import ReportesPage from './ui/adminUI/Reportes';
 import DashboardPage from './ui/adminUI/Dashboard';
+import AuditoriaPage from './ui/adminUI/Auditoria';
 
 //UIFAMILIAR
 import FamiliarCamara from './ui/familiarUI/Camarafamiliar';
@@ -103,7 +104,14 @@ function App() {
             />
           }
         />
-
+        <Route path="/admin/auditoria"
+          element={
+            <ProtectedRoute
+              element={<AuditoriaPage />}
+              allowedRoles={['admin']}
+            />
+          }
+        />
 
         <Route path="/familiar/camara"
           element={
