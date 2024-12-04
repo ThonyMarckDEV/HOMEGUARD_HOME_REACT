@@ -130,13 +130,14 @@ function Luces() {
       const result = await response.json();
   
       if (response.ok) {
-        setSuccessMessage(result.message);
         setError(""); // Limpiar cualquier mensaje de error
         fetchSchedules();
         setScheduledTime1("");
         setScheduledTimeOff1("");
         setScheduledTime2("");
         setScheduledTimeOff2("");
+        window.location.reload();
+        setSuccessMessage(result.message);
       } else {
         setError(result.error);
         setSuccessMessage(""); // Limpiar cualquier mensaje de éxito

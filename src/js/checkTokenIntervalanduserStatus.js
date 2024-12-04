@@ -77,7 +77,7 @@ export const checkUserStatus = async () => {
 
             if (data.status === 'loggedOff' || (data.status === 'loggedOnInvalidToken' && !data.isTokenValid)) {
                 console.log("Estado del usuario/token inválido. Redirigiendo al login...");
-                logoutAndRedirect();
+              //  logoutAndRedirect();
             } else if (data.status === 'loggedOn' && data.isTokenValid) {
                // console.log("Estado del usuario activo y token válido.");
             }
