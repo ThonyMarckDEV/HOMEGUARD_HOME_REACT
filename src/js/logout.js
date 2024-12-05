@@ -28,7 +28,8 @@ export async function logout() {
        // Eliminar la cookie JWT configurando su fecha de expiración en el pasado
       document.cookie = "jwt=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; Secure; SameSite=Strict";
   
-   
+        // Eliminar el session de localStorage
+       sessionStorage.removeItem('hasReloaded');
     // Redirigir a la página de inicio de sesión en el dominio raíz
     window.location.href = `/login`;
 

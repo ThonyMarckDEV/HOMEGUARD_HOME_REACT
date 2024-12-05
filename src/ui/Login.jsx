@@ -11,27 +11,27 @@ function Login() {
   const [loading, setLoading] = useState(false); // Estado para controlar la pantalla de carga
   const navigate = useNavigate(); // Hook para redirigir al usuario
 
-  // Función para verificar el token en localStorage y redirigir
-  const checkAuth = () => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      // Decodificar el token JWT para obtener el rol y el estado del usuario
-      const decodedToken = parseJwt(token);
-      if (decodedToken) {
-        const role = decodedToken.rol;
-        if (role === 'admin') {
-          // Redirigir al panel de admin si el rol es 'admin'
-          navigate('/admin');
-        } else if(role === 'familiar') {
-           // Redirigir al panel de admin si el rol es 'admin'
-           navigate('/familiar/camara');
-        }else{
-            // Redirigir al home si el rol no es nongun rol
-           navigate('/');
-        }
+// Función para verificar el token en localStorage y redirigir
+const checkAuth = () => {
+  const token = localStorage.getItem('jwt');
+  if (token) {
+    // Decodificar el token JWT para obtener el rol y el estado del usuario
+    const decodedToken = parseJwt(token);
+    if (decodedToken) {
+      const role = decodedToken.rol;
+      if (role === 'admin') {
+        // Redirigir al panel de admin si el rol es 'admin'
+        window.location.href = '/admin';
+      } else if (role === 'familiar') {
+        // Redirigir al panel de familiar si el rol es 'familiar'
+        window.location.href = '/familiar/camara';
+      } else {
+        // Redirigir al home si el rol no es reconocido
+        window.location.href = '/';
       }
     }
-  };
+  }
+};
 
   useEffect(() => {
     checkAuth(); // Verificar autenticación cuando el componente se monta

@@ -54,7 +54,7 @@ export async function verificarYRenovarToken() {
             console.log("Renovación completada, el nuevo token se utilizará en la siguiente solicitud.");
         } else {
             console.log("No se pudo renovar el token, redirigiendo al login...");
-           // logoutAndRedirect();
+            logoutAndRedirect();
         }
     } else {
        // console.log("El token es válido y no necesita renovación.");

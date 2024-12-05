@@ -167,7 +167,7 @@ const checkAndRenewToken = async () => {
     if (timeRemaining <= 0) {
         alert("Tu sesión ha caducado, serás redirigido para iniciar sesión nuevamente.");
         console.log("El token ha expirado, cerrando sesión...");
-      //  logoutAndRedirect();
+         logoutAndRedirect();
     } else if (timeRemaining <= expirationThreshold) {
        // console.log(`Renovando el token, tiempo restante hasta expiración: ${timeRemaining} segundos.`);
         await renewToken(token);
